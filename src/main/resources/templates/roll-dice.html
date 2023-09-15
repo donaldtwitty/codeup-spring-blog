@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Roll Dice</title>
 </head>
 <body>
-
+<h1>Roll Dice</h1>
+<p>Guess a number between 1 and 6:</p>
+<form action="/roll-dice" method="get">
+    <input type="number" name="guess" />
+    <input type="submit" value="Roll Dice" />
+</form>
+<p>The random number is {{ randomNumber }}</p>
+<p>Your guess was {{ guess }}</p>
+<p>
+    You guessed correctly {{ correct ? "Yes" : "No" }}
+</p>
 </body>
 </html>
