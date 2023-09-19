@@ -1,26 +1,45 @@
 package edu.codeup.codeupspringblog.controllers;
 
-import org.springframework.web.bind.annotation.*;
+import edu.codeup.codeupspringblog.models.Post;
+import edu.codeup.codeupspringblog.models.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+@Controller
 public class PostController {
+    @Autowired
+    private PostRepository postRepository;
+
+    public PostController(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
+
     @GetMapping("/posts")
-    public String getPostsIndexPage() {
-        return "This is the posts index page.";
+    public String list(Model model) {
+        model.addAttribute("posts", postRepository.findAll());
+        return "posts/list";
     }
 
-    @GetMapping("posts/{id}")
-    public String viewPost(@PathVariable("id") String id) {
-        return "This is the page for viewing post with id " + id;
+    @GetMapping("/posts/create")
+    public String createPostForm(Model model) {
+        model.addAttribute("post", new Post());
+        return "posts/create";
     }
 
-    @GetMapping("posts/create")
-    public String getPostCreateForm() {
-        return "View form for creating a post.";
+    @PostMapping("/posts/create")
+    public String createSubmit(Post post) {
+        postRepository.save(post);
+        return "redirect:/posts";
     }
 
-    @PostMapping("posts/create")
-    public String createPost() {
-        return "This is a new post.";
+    @PostMapping("/posts")
+    public String createPost(@ModelAttribute Post post) {
+        postRepository.save(post);
+        return "redirect:/posts";
     }
 }
