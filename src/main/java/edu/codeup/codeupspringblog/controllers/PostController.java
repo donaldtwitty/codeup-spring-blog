@@ -2,6 +2,7 @@ package edu.codeup.codeupspringblog.controllers;
 
 import edu.codeup.codeupspringblog.models.Post;
 import edu.codeup.codeupspringblog.models.PostRepository;
+import edu.codeup.codeupspringblog.models.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private PostRepository postDao;
+    private UserRepository userDao;
 
-    public PostController(PostRepository postDao) {
+    public PostController(PostRepository postDao, UserRepository userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
     }
+
 
     @GetMapping("")
     public String indexPage(Model model) {
@@ -45,7 +49,7 @@ public class PostController {
     ) {
         System.out.println(title);
         System.out.println(content);
-        postDao.save(new Post (title, content));
+        postDao.save(new Post(title, content, userDao.findById(1L)).get());
         return "redirect:/posts";
     }
 }
