@@ -59,4 +59,28 @@ public class PostController {
         return "redirect:/posts";
 //    }
     }
+
+    @GetMapping("/{id}/edit")
+    public String editPostForm(@PathVariable long id, Model model) {
+        if (postDao.existsById(id)) {
+            Post post = postDao.findById(id).get();
+            model.addAttribute("post", post);
+            return "posts/edit";
+        }
+        return "redirect:/posts";
+    }
+
+    @PostMapping("/edit")
+    public String editPost(@ModelAttribute Post post) {
+        System.out.println(post.getTitle());
+        User hardCoded = userDao.findById(1L).get();
+        Post updatedPost = new Post(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                hardCoded
+        );
+        postDao.save(updatedPost);
+        return "redirect:/posts";
+    }
 }
