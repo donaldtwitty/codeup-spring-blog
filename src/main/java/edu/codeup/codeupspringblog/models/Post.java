@@ -2,6 +2,8 @@ package edu.codeup.codeupspringblog.models;
 
 import jakarta.persistence.*;
 
+import java.util.Optional;
+
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -16,7 +18,7 @@ public class Post {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -38,6 +40,22 @@ public class Post {
         this.title = title;
         this.content = content;
         this.user = user;
+    }
+
+    public Post(String title) {
+        this.title = title;
+    }
+
+    public Post(User user) {
+        this.user = user;
+    }
+
+    public Post(String title, String content, Optional<User> byId) {
+    }
+
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
     public Long getId() {
@@ -71,5 +89,9 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Post get() {
+        return null;
     }
 }

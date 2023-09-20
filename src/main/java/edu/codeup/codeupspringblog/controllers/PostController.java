@@ -2,11 +2,14 @@ package edu.codeup.codeupspringblog.controllers;
 
 import edu.codeup.codeupspringblog.models.Post;
 import edu.codeup.codeupspringblog.models.PostRepository;
+import edu.codeup.codeupspringblog.models.User;
 import edu.codeup.codeupspringblog.models.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/posts")
@@ -47,9 +50,13 @@ public class PostController {
             @RequestParam("title") String title,
             @RequestParam("content") String content
     ) {
-        System.out.println(title);
-        System.out.println(content);
-        postDao.save(new Post(title, content, userDao.findById(1L)).get());
+
+//        System.out.println(title);
+//        System.out.println(content);
+        Optional<User> user = userDao.findById(2L);
+        Post newPost = new Post(title, content);
+        postDao.save(newPost);
         return "redirect:/posts";
+//    }
     }
 }
